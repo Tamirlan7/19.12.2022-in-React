@@ -1,0 +1,16 @@
+.button {
+    padding: 10px 20px;
+    border: 1px solid teal;
+    color: teal;
+    border-radius: 5px;
+    font-family: 'Montserrat', 'sans-serif';
+    background: transparent;
+}
+
+.button:hover {
+    transition: ease .4s;
+    color: #fff;
+    border: 1px solid transparent;
+    background-color: teal;
+    box-shadow: -3px 3px 4px 1px #000;
+}
