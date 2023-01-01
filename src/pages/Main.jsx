@@ -1,33 +1,27 @@
-import React, { useEffect, useMemo, useState } from "react";
-import Server from "../API/Server";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Products from '../components/Products';
 import Sort from "../components/Sort";
-import { useFetch } from "../hooks/useFetch";
-import { useSearch, useSelected } from "../hooks/useSort";
+import { useSearch } from "../hooks/useSort";
+import { setProductsFromServerWatcher } from "../store/reducers/products";
 import '../styles/Main.css';
-import Loader from "../UI/Loader/Loader";
 
 export default function Main () {
+    const dispatch = useDispatch();
     const [sortProducts, setSortProducts] = useState({selected: '', search: ''});
-    const [products, setProducts] = useState([]);
-
-    const [getProducts, isLoading, ProductsError] = useFetch(() => {
-        Server.getProducts().then(products => setProducts(products));        
-    });
+    const products = useSelector(state => state.products.products);
 
     const sortedAndSearchedProducts = useSearch(sortProducts, products);
 
+
     useEffect(() => {
-        getProducts()
+        dispatch(setProductsFromServerWatcher());
     }, []);
 
     return (
         <div className="main">
             <Sort selected={sortProducts.selected} search={sortProducts.search} setSortProducts={setSortProducts} />
-            {isLoading 
-            ? <Loader />
-            : <Products products={sortedAndSearchedProducts}/>
-            }
+            <Products products={sortedAndSearchedProducts}/>
         </div>
     );
 };
